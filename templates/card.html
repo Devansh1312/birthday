@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block styles %}
+.card-container {
+    perspective: 1000px;
+    margin: 50px auto;
+    width: 400px;
+    height: 600px;
+}
+
+.card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.card-front {
+    background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+    color: white;
+    text-align: center;
+}
+
+.card-back {
+    background: linear-gradient(135deg, #6bcf7e, #4d9de0);
+    color: white;
+    transform: rotateY(180deg);
+    text-align: center;
+}
+
+.card-front h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-front .decorative {
+    font-size: 4rem;
+    margin: 20px 0;
+    animation: bounce 2s infinite;
+}
+
+.card-back h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-back .message {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.card-back .signature {
+    font-size: 1.3rem;
+    font-style: italic;
+    margin-top: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.click-hint {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: pulse 2s infinite;
+}
+
+.floating-hearts {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.heart-float {
+    position: absolute;
+    color: #ff6b6b;
+    font-size: 20px;
+    animation: float-up 4s ease-out infinite;
+}
+
+@keyframes float-up {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+.card-decoration {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+.card-decoration.top-left { top: 20px; left: 20px; }
+.card-decoration.top-right { top: 20px; right: 20px; }
+.card-decoration.bottom-left { bottom: 20px; left: 20px; }
+.card-decoration.bottom-right { bottom: 20px; right: 20px; }
+{% endblock %}
+
+{% block content %}
+<h1 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 30px;">💌 A Special Message For You 💌</h1>
+
+<div class="card-container">
+    <div class="card" id="birthdayCard" onclick="flipCard()">
+        <div class="card-front">
+            <div class="card-decoration top-left">✨</div>
+            <div class="card-decoration top-right">🌟</div>
+            <div class="card-decoration bottom-left">💫</div>
+            <div class="card-decoration bottom-right">⭐</div>
+            
+            <h1>Happy 20th Birthday!</h1>
+            <div class="decorative">🎂</div>
+            <p style="font-size: 1.2rem;">To the most amazing person in my life</p>
+            <p style="font-size: 1rem; margin-top: 20px;">Click to open your card! 👆</p>
+        </div>
+        
+        <div class="card-back">
+            <div class="card-decoration top-left">💕</div>
+            <div class="card-decoration top-right">❤️</div>
+            <div class="card-decoration bottom-left">💖</div>
+            <div class="card-decoration bottom-right">💝</div>
+            
+            <h2>My Dearest Love,</h2>
+            
+            <div class="message">
+                Today you turn 20, and I couldn't be more proud of the incredible woman you've become.
+            </div>
+            
+            <div class="message">
+                Your smile lights up my world, your laughter is my favorite melody, and your love is my greatest treasure.
+            </div>
+            
+            <div class="message">
+                You have a heart of gold, a spirit that inspires everyone around you, and dreams that I know will come true.
+            </div>
+            
+            <div class="message">
+                Thank you for being you - beautiful, kind, strong, and absolutely perfect in every way.
+            </div>
+            
+            <div class="message">
+                Here's to celebrating you today and loving you always! 🥰
+            </div>
+            
+            <div class="signature">
+                Forever yours,<br>
+                Your loving boyfriend ❤️
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="click-hint">💡 Click the card to flip it and read your message!</div>
+
+<a href="/photos" class="btn">📸 View Our Photo Memories</a>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function flipCard() {
+    const card = document.getElementById('birthdayCard');
+    card.classList.toggle('flipped');
+    
+    // Create floating hearts effect
+    createFloatingHearts();
+}
+
+function createFloatingHearts() {
+    const hearts = ['💕', '❤️', '💖', '💝', '💗', '💓'];
+    
+    for (let i = 0; i < 10; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart-float';
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = window.innerHeight + 'px';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            
+            const container = document.createElement('div');
+            container.className = 'floating-hearts';
+            container.appendChild(heart);
+            document.body.appendChild(container);
+            
+            setTimeout(() => container.remove(), 4000);
+        }, i * 200);
+    }
+}
+
+// Add sparkle effects around the card
+setInterval(() => {
+    const sparkle = document.createElement('div');
+    sparkle.style.position = 'fixed';
+    sparkle.style.width = '6px';
+    sparkle.style.height = '6px';
+    sparkle.style.background = '#ffd93d';
+    sparkle.style.borderRadius = '50%';
+    sparkle.style.left = (200 + Math.random() * 400) + 'px';
+    sparkle.style.top = (100 + Math.random() * 600) + 'px';
+    sparkle.style.animation = 'twinkle 2s ease-in-out infinite';
+    sparkle.style.pointerEvents = 'none';
+    
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 2000);
+}, 500);
+</script>
+{% endblock %}

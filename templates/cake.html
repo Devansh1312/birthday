@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block styles %}
+.cake-container {
+    position: relative;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.cake {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    margin: 0 auto;
+    background: linear-gradient(45deg, #8B4513, #A0522D);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+}
+
+.cake::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 10px;
+    right: 10px;
+    height: 40px;
+    background: linear-gradient(45deg, #FFB6C1, #FF69B4);
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cake::after {
+    content: '';
+    position: absolute;
+    top: -35px;
+    left: 20px;
+    right: 20px;
+    height: 30px;
+    background: linear-gradient(45deg, #FFFFFF, #F0F0F0);
+    border-radius: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.candles {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+}
+
+.candle {
+    width: 8px;
+    height: 30px;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    border-radius: 4px;
+    position: relative;
+}
+
+.flame {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 15px;
+    background: radial-gradient(circle, #FF4500, #FFD700);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 1s ease-in-out infinite;
+}
+
+@keyframes flicker {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.1) rotate(2deg); }
+}
+
+.knife {
+    position: absolute;
+    width: 200px;
+    height: 20px;
+    background: linear-gradient(90deg, #8B4513, #A0522D);
+    border-radius: 10px;
+    top: 50%;
+    left: -250px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.knife::before {
+    content: '';
+    position: absolute;
+    right: -80px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 80px solid #C0C0C0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+
+.knife:hover {
+    left: -200px;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.cake-cut {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3px;
+    height: 0;
+    background: #8B4513;
+    transform: translateX(-50%);
+    transition: height 0.5s ease;
+}
+
+.cut-animation {
+    height: 100% !important;
+}
+
+.cake-instruction {
+    margin-top: 50px;
+    font-size: 1.5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.celebration {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 1000;
+    text-align: center;
+}
+
+.celebration h2 {
+    color: #ff6b6b;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.celebration p {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #ff6b6b;
+    animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<h1 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 30px;">🎂 Birthday Cake Time! 🎂</h1>
+
+<div class="cake-container">
+    <div class="cake" id="cake">
+        <div class="candles">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+        </div>
+        <div class="cake-cut" id="cakeCut"></div>
+    </div>
+    
+    <div class="knife" id="knife" onclick="cutCake()"></div>
+    
+    <p class="cake-instruction">Click the knife to cut the cake! 🔪</p>
+</div>
+
+<div class="celebration" id="celebration">
+    <h2>🎉 Yay! 🎉</h2>
+    <p>You've successfully cut the birthday cake!</p>
+    <p>Time to make a wish and celebrate! ✨</p>
+    <a href="/card" class="btn">📝 Read Your Special Card</a>
+</div>
+
+<a href="/card" class="btn">📝 Skip to Card</a>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function cutCake() {
+    const knife = document.getElementById('knife');
+    const cake = document.getElementById('cake');
+    const cakeCut = document.getElementById('cakeCut');
+    const celebration = document.getElementById('celebration');
+    
+    // Animate knife cutting
+    knife.style.left = '50px';
+    knife.style.transition = 'left 1s ease';
+    
+    // Show cut line
+    setTimeout(() => {
+        cakeCut.classList.add('cut-animation');
+        
+        // Hide candles (blow them out)
+        const flames = document.querySelectorAll('.flame');
+        flames.forEach(flame => {
+            flame.style.opacity = '0';
+        });
+        
+        // Show celebration
+        setTimeout(() => {
+            celebration.style.display = 'block';
+            createConfetti();
+        }, 500);
+    }, 1000);
+}
+
+function createConfetti() {
+    const colors = ['#ff6b6b', '#ffd93d', '#6bcf7e', '#4d9de0', '#ff8e8e', '#a8e6cf'];
+    
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 3000);
+        }, i * 100);
+    }
+}
+
+// Add some sparkle effects
+setInterval(() => {
+    const sparkle = document.createElement('div');
+    sparkle.style.position = 'fixed';
+    sparkle.style.width = '4px';
+    sparkle.style.height = '4px';
+    sparkle.style.background = '#ffd93d';
+    sparkle.style.borderRadius = '50%';
+    sparkle.style.left = Math.random() * window.innerWidth + 'px';
+    sparkle.style.top = Math.random() * window.innerHeight + 'px';
+    sparkle.style.animation = 'sparkle 2s ease-in-out infinite';
+    sparkle.style.pointerEvents = 'none';
+    
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 2000);
+}, 300);
+</script>
+{% endblock %}
